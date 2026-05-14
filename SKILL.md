@@ -61,8 +61,8 @@
 ### 每次交互时（自动）
 ```
 用户发任何消息
-  ├─ check_reminders.py  → 有到期提醒？推送
-  └─ 处理用户请求
+  → 处理用户请求
+  → check_daily.py → 显示摘要状态（仅笔记相关时）
 ```
 
 ### 记笔记
@@ -91,9 +91,8 @@
 | cron | 脚本 | 经 LLM |
 |------|------|--------|
 | 每天 10:00 | `send_daily.py` | ❌ |
+| 每分钟 | `check_reminders.py` | ❌ |
 | 每天 0:00 | `cleanup_notes.py` | ❌ |
-
-定时提醒不靠 cron 轮询，用户交互时 `check_reminders.py` 顺带检查。
 
 ---
 
