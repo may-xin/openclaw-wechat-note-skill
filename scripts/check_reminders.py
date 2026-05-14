@@ -150,18 +150,20 @@ def main():
     now = datetime.now()
     reminders = parse_reminders()
     state = load_state()
+    
+    if reminders:
+        print(f"[{now.strftime('%H:%M:%S')}] 检查 {len(reminders)} 条提醒", flush=True)
 
     for r in reminders:
-        diff = (now - r["reminder_time"]).total_seconds()
-        # 窗口：已到期且未超过 5 分钟
-        if diff < 0 or diff > 300:
+        # 已到期（无窗口限制，只要过期就触发）
+        if r["reminder_time"] > now:
             continue
 
         key = f"{r['title']}_{r['reminder_str']}"
         if key in state["sent"]:
             continue
 
-        print(f"[reminder] 触发: {r['title']}", flush=True)
+        print(f"[{now.strftime('%H:%M:%S')}] 触发: {r['title']}", flush=True)
         if send_reminder(r["title"], r["reminder_time"]):
             state["sent"].append(key)
             save_state(state)
