@@ -88,15 +88,19 @@ def save_state(state):
 
 
 def mark_done(reminder_str):
+    """标记提醒为已完成"""
     content = DETAILED_FILE.read_text(encoding="utf-8")
     idx = content.find(reminder_str)
     if idx < 0:
         return
-    line_end = content.find("\n", idx)
-    if line_end < 0:
-        line_end = len(content)
-    new_content = content[:line_end + 1] + "done: true\n" + content[line_end + 1:]
-    DETAILED_FILE.write_text(new_content, encoding="utf-8")
+    # 找到这个提醒块的 done: false 并替换
+    block_start = idx
+    next_title = content.find("\n- **", idx)
+    block_end = next_title if next_title > 0 else len(content)
+    block = content[block_start:block_end]
+    if "done: false" in block:
+        new_content = content[:block_start] + block.replace("done: false", "done: true") + content[block_end:]
+        DETAILED_FILE.write_text(new_content, encoding="utf-8")
 
 
 def clean_concise_reminder(title):
