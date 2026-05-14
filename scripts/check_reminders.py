@@ -96,6 +96,22 @@ def mark_done(reminder_str):
     DETAILED_FILE.write_text(new_content, encoding="utf-8")
 
 
+def clean_concise_reminder(title):
+    """触发后从精简版移除该提醒"""
+    concise = script_dir / "NOTES.concise.md"
+    if not concise.exists():
+        return
+    content = concise.read_text(encoding="utf-8")
+    # 移除 ⏰ 开头的对应行
+    lines = content.split("\n")
+    new_lines = []
+    for line in lines:
+        if "⏰" in line and title.replace("提醒：", "") in line:
+            continue
+        new_lines.append(line)
+    concise.write_text("\n".join(new_lines), encoding="utf-8")
+
+
 def update_repeat(reminder_str, repeat):
     content = DETAILED_FILE.read_text(encoding="utf-8")
     old_time = datetime.fromisoformat(reminder_str)
@@ -154,6 +170,7 @@ def main():
                 update_repeat(r["reminder_str"], r["repeat"])
             else:
                 mark_done(r["reminder_str"])
+                clean_concise_reminder(r["title"])
 
     # 清理 1 小时前的状态
     cutoff = (now - timedelta(hours=1)).isoformat()
