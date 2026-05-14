@@ -10,8 +10,11 @@ import os
 import re
 import subprocess
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+# CST 时区
+CST = timezone(timedelta(hours=8))
 
 script_dir = Path(__file__).resolve().parent
 DETAILED_FILE = script_dir / "NOTES.detailed.md"
@@ -52,7 +55,7 @@ def parse_reminders():
             continue
 
         try:
-            rt = datetime.fromisoformat(reminder_str)
+            rt = datetime.fromisoformat(reminder_str).replace(tzinfo=CST)
         except ValueError:
             continue
 
@@ -147,7 +150,7 @@ def send_reminder(title, reminder_time):
 
 
 def main():
-    now = datetime.now()
+    now = datetime.now(CST)
     reminders = parse_reminders()
     state = load_state()
     
