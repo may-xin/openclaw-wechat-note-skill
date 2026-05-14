@@ -42,16 +42,18 @@ def parse_reminders():
     pattern = re.compile(
         r'^\s*[-*]\s+\*\*(提醒：.+?)\*\*\s*\n'
         r'(.*?)'
-        r'reminder:\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})',
+        r'reminder:\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})'
+        r'(.*?)'
+        r'(?=^\s*[-*]\s+\*\*|\Z)',
         re.MULTILINE | re.DOTALL
     )
 
     for match in pattern.finditer(reminder_section):
         title = match.group(1).strip()
-        block = match.group(2)
         reminder_str = match.group(3).strip()
+        full_block = match.group(2) + match.group(4)  # 前后合并
 
-        if "done: true" in block:
+        if "done: true" in full_block:
             continue
 
         try:
@@ -60,7 +62,7 @@ def parse_reminders():
             continue
 
         repeat = "none"
-        rm = re.search(r'repeat:\s*(\S+)', block)
+        rm = re.search(r'repeat:\s*(\S+)', full_block)
         if rm:
             repeat = rm.group(1)
 
