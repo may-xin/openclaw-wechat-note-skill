@@ -1,4 +1,4 @@
-# OpenClaw WeChat Notes Skill
+# OpenClaw WeChat Note Skill
 
 跨平台微信集成笔记系统，支持 **Linux / macOS / Windows**。
 
@@ -35,7 +35,7 @@ python configure.py
 ## 项目结构
 
 ```
-openclaw-wechat-skill/
+openclaw-wechat-note-skill/
 ├── SKILL.md              # 技能定义
 ├── configure.py          # 跨平台配置向导
 └── lib/

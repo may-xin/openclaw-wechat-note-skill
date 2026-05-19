@@ -1,4 +1,4 @@
-# OpenClaw WeChat Notes Skill
+# OpenClaw WeChat Note Skill
 
 ## 概述
 
@@ -13,7 +13,7 @@
 首次调用时：
 
 ```
-📋 OpenClaw WeChat Notes v1.2
+📋 OpenClaw WeChat Note v1.2
 
   • 记笔记 — 说「记一下 xxx」
   • 定时提醒 — 说「提醒我 15:30 开会」
@@ -149,7 +149,7 @@ notes/
 ├── check_daily.py           # 摘要状态（交互时）
 └── cleanup_notes.py         # 自动清理（cron）
 
-openclaw-wechat-skill/
+openclaw-wechat-note-skill/
 ├── SKILL.md                 # 本文件
 ├── configure.py             # 配置向导
 └── lib/{paths,scheduler}.py
